@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-MONGO_URI = "mongodb+srv://your_mongo_url"
+MONGO_URI = "mongodb+srv://Avnish:Avnish1245@cluster0.jedujxw.mongodb.net/"
 client = MongoClient(MONGO_URI)
 db = client.get_database("test")
 collection = db["products"]
