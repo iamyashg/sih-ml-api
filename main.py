@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Query
 from typing import List
 from specsmatch import find_similar_products
 import logging
-import uvicorn
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
@@ -76,5 +75,7 @@ def match_products(
         logger.error(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="An unexpected error occurred.")
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=9000)
+
+# Vercel requires this: ASGI handler for FastAPI
+from mangum import Mangum
+handler = Mangum(app)
