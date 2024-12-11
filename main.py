@@ -44,7 +44,23 @@ df["specifications"] = df["specifications"].apply(normalize_specifications)
 # FastAPI route to find similar products
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the Product Specification Matching API!"}
+    return {
+        "message": "Welcome to the Product Specification Matching API! Here’s how to use the API:",
+        "instructions": [
+            "1. **GET /match**: This endpoint allows you to search for products based on your desired specifications.",
+            "2. **Query Parameters**:",
+            "   - **input**: A list of key-value pairs representing the product specifications you're looking for.",
+            "     - Example: `input=brand:Samsung, color:Black`",
+            "   - **top_n**: The number of top matches to return. Default is 5, but you can set it to any number greater than 0.",
+            "     - Example: `top_n=3` will return the top 3 matching products.",
+            "3. **Response**: The API will return the matched products along with their specifications and match scores.",
+            "4. Example Usage:",
+            "   - Request: `/match?input=brand:Samsung&input=color:Black&top_n=3`",
+            "   - Response: A list of products that match the brand 'Samsung' and color 'Black', with their match scores.",
+            "5. **Error Handling**: If there’s an issue with your request (e.g., incorrect input format), you will receive an error message with a 500 status code."
+        ]
+    }
+
 
 @app.get("/match", status_code=200)
 def match_products(
