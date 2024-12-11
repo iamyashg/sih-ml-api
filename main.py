@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Query
 from typing import List
 from specsmatch import find_similar_products
 import logging
+import uvicorn
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
@@ -27,7 +28,7 @@ def read_root():
 @app.get("/match", status_code=200)
 def match_products(
     input: List[str] = Query(..., description="A list of key-value pairs representing desired specifications"),
-    top_n: int = Query(5, ge=1, description="Number of top matches to return (default is 5, must be at least 1)")
+    top_n: int = Query(5, ge=1, description="Number of top matches to return (default is 5, must be at least 1)"),
 ):
     """
     API endpoint to find similar products based on user input specifications.
@@ -62,7 +63,7 @@ def match_products(
         return {
             "input": input,
             "parsed_specs": user_specs,
-            "matched_products": products
+            "matched_products": products,
         }
 
     except ValueError as ve:
@@ -75,7 +76,5 @@ def match_products(
         logger.error(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="An unexpected error occurred.")
 
-
-# Vercel requires this: ASGI handler for FastAPI
-from mangum import Mangum
-handler = Mangum(app)
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=9000)
