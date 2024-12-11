@@ -54,24 +54,24 @@ class ProductSearchRequest(BaseModel):
 @app.get("/")
 def read_root():
     return {
-        "message": "Welcome to the Product Specification Matching API! Here’s how to use the API:",
-        "instructions": [
-            "1. **GET /match**: This endpoint allows you to search for products based on your desired specifications.",
-            "2. **JSON Input**:",
-            "   - `name`: Name of the product (string).",
-            "   - `type`: Type of the product (string).",
-            "   - `specifications`: A dictionary of key-value pairs representing desired product specifications.",
-            "     - Example: {\"brand\": \"Samsung\", \"color\": \"Black\", \"memory\": \"16GB\"}",
-            "3. **Response**: The API will return the matched products along with their specifications and match scores.",
-            "4. Example Usage:",
-            "   - Request: `{\"name\": \"HP 15\", \"type\": \"laptop\", \"specifications\": {\"brand\": \"HP\", \"color\": \"Black\", \"memory\": \"8GB\"}}`",
-            "   - Response: A list of products that match the given specifications, with their match scores.",
-            "5. **Error Handling**: If there’s an issue with your request, you will receive an error message with a 500 status code."
-        ]
+        "message": "Welcome to the Product Matching API!",
+        "usage": {
+            "endpoint": "/match",
+            "method": "POST",
+            "input": {
+                "name": "Product name (string)",
+                "type": "Product type (string)",
+                "specifications": "Desired specifications (dict)"
+            },
+            "example": {
+                "request": {"name": "HP 15", "type": "laptop", "specifications": {"brand": "HP", "color": "Black", "memory": "8GB"}},
+                "response": "Matched products with match scores."
+            }
+        },
+        "note": "Errors return a 500 status with details."
     }
 
-
-@app.get("/match", status_code=200)
+@app.post("/match", status_code=200)
 def match_products(request: ProductSearchRequest):
     try:
         # Parse the user specifications from query parameters
@@ -98,3 +98,4 @@ def match_products(request: ProductSearchRequest):
     except Exception as e:
         logger.error(f"Error: {e}")
         raise HTTPException(status_code=500, detail="An error occurred")
+        
