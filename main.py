@@ -62,7 +62,7 @@ df["specifications"] = df["specifications"].apply(normalize_specifications)
 
 # Pydantic model for input validation
 class ProductSearchRequest(BaseModel):
-    #name: str
+
     type: str
     specifications: Dict[str, str]
 
